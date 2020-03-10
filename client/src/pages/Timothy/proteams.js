@@ -1,5 +1,5 @@
 import React from "react";
-import "./proteam.scss";
+import "./proteam.css";
 import { Link } from "react-router-dom";
 
 const teamIknow = [

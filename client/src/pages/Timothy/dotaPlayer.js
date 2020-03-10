@@ -1,5 +1,5 @@
 import React from "react";
-import "./dotaPlayer.scss";
+import "./dotaPlayer.css";
 
 export default class DotaPlayer extends React.Component {
   /**

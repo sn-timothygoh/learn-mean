@@ -1,5 +1,5 @@
 import React from "react";
-import "./HeroApi.scss";
+import "./HeroApi.css";
 import callApi from "../DotaAPI/FetchFunction";
 
 export default class HeroAbilities extends React.Component {

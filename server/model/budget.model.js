@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
 
 var budgetSchema = new mongoose.Schema({
-    desc : {
-        type : String,
-        required : "This field is required"
-    },
-    amount : {
-        type : String,
-        required : "This field is required"
-    }
+  desc: {
+    type: String,
+    required: "This field is required"
+  },
+  amount: {
+    type: String,
+    required: "This field is required"
+  }
 });
 
 // employeeSchema.path('email').validate((val) => {
@@ -16,4 +16,4 @@ var budgetSchema = new mongoose.Schema({
 //     return emailRegex.test(val);
 // }, 'Invalid e-mail.');
 
-mongoose.model("Budget", budgetSchema);
+module.exports = mongoose.model("Budget", budgetSchema);

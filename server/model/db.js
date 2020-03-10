@@ -1,14 +1,18 @@
 const mongoose = require("mongoose");
-mongoose.set('useFindAndModify', false);
+mongoose.set("useFindAndModify", false);
 
-var uri = "mongodb+srv://timothy:timothy98@cluster0-w2tni.mongodb.net/BudgetTracker?retryWrites=true&w=majority";
+var uri =
+  "mongodb+srv://timothy:timothy98@cluster0-w2tni.mongodb.net/BudgetTracker?retryWrites=true&w=majority";
 
-
-mongoose.connect(uri, {useNewUrlParser: true, useFindAndModify : false}, (error) => {
+mongoose.connect(
+  uri,
+  { useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true },
+  error => {
     if (!error) {
-        console.log("connected to db");
+      console.log("Connection to Mongodb has established");
     } else {
-        console.log("connection failed" + error);
+      console.log("connection failed" + error);
     }
-});
-require('./budget.model');
+  }
+);
+require("./budget.model");

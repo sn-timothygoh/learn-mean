@@ -13,6 +13,7 @@ import DotaLandingPage from "../pages/DotaAPI/DotaLandingPage";
 import HeroProfile from "../pages/DotaAPI/HeroProfile";
 import MatchDetail from "../pages/ChokKahYang/MatchDetail";
 import BudgetTracker from "../pages/Timothy/budgetTracker";
+import CreateExpense from "../pages/Timothy/components/create-expense.component";
 
 export default class Routes extends React.Component {
   constructor(props) {
@@ -34,10 +35,17 @@ export default class Routes extends React.Component {
           <Route exact path="/Dota2" component={Dota2} />
           <Route path="/Dota2/:id" component={itemDetails} />
           <Route exact path="/DotaAPI" component={DotaLandingPage} />
-          <Route exact path="/DotaAPI/HeroProfile/:id" component={HeroProfile} />
+          <Route
+            exact
+            path="/DotaAPI/HeroProfile/:id"
+            component={HeroProfile}
+          />
           <Route exact path="/Dota2/:id" component={itemDetails} />
           <Route exact path="/DotaAPI/match/:id" component={MatchDetail} />
-          <Route exact path="/testApi" component={BudgetTracker} />
+          <Route path="/budget" component={BudgetTracker} />
+          {/* <Route path="/budget/edit/:id" component={EditExpense} /> */}
+          <Route path="/budget/add" component={CreateExpense} />
+          {/* <Route path="/budget/user" component={CreateUser} /> */}
         </Switch>
       </BrowserRouter>
     );

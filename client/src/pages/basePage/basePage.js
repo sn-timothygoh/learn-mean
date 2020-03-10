@@ -1,5 +1,5 @@
 import React from "react";
-import "./basePage.scss";
+import "./basePage.css";
 
 export default class BasePage extends React.Component {
   constructor(props) {

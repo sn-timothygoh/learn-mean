@@ -1,5 +1,5 @@
 import React from "react";
-import "./style.scss";
+import "./style.css";
 import VinImage from "./1808274.jpg";
 
 export default class VinBodyContent extends React.Component {

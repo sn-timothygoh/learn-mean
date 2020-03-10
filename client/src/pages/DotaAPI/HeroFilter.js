@@ -1,5 +1,5 @@
 import React from "react";
-import "./HeroApi.scss";
+import "./HeroApi.css";
 import { Link } from "react-router-dom";
 
 export default class HeroFilter extends React.Component {

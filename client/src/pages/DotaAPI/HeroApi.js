@@ -1,5 +1,5 @@
 import React from "react";
-import "./HeroApi.scss";
+import "./HeroApi.css";
 import HeroFilter from "../DotaAPI/HeroFilter";
 import callApi from "../DotaAPI/FetchFunction";
 

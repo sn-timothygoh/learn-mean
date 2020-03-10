@@ -1,6 +1,6 @@
 import React from "react";
 import BasePage from "../basePage/basePage";
-import "./timothy.scss";
+import "./timothy.css";
 
 export default class Timothy extends React.Component {
   render() {

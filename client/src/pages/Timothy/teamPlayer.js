@@ -1,6 +1,6 @@
 import React from "react";
 import BasePage from "../basePage/basePage";
-import "./teamPlayer.scss";
+import "./teamPlayer.css";
 import { Link } from "react-router-dom";
 
 export default class TeamPlayer extends React.Component {
