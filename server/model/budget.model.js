@@ -1,6 +1,9 @@
 const mongoose = require("mongoose");
 
 var budgetSchema = new mongoose.Schema({
+  username: {
+    type: String
+  },
   desc: {
     type: String,
     required: "This field is required"
@@ -8,6 +11,9 @@ var budgetSchema = new mongoose.Schema({
   amount: {
     type: String,
     required: "This field is required"
+  },
+  date: {
+    type: Date
   }
 });
 

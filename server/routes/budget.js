@@ -30,7 +30,7 @@ router.route("/:id").delete((req, res) => {
 });
 
 router.route("/update/:id").post((req, res) => {
-  Exercise.findById(req.params.id)
+  Budget.findById(req.params.id)
     .then(budgets => {
       budgets.desc = req.body.desc;
       budgets.amount = req.body.amount;

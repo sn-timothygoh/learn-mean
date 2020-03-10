@@ -6,7 +6,7 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
+  NavLink
 } from "reactstrap";
 
 export default class TopBar extends React.Component {
@@ -50,7 +50,7 @@ export default class TopBar extends React.Component {
               <NavLink href="/DotaAPI">Dota2</NavLink>
             </NavItem>
             <NavItem>
-                <NavLink href="/testApi">Test API</NavLink>
+              <NavLink href="/budget">Budget Tracker</NavLink>
             </NavItem>
           </Nav>
         </Collapse>

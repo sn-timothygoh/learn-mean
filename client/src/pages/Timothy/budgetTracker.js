@@ -1,7 +1,9 @@
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import BasePage from "../basePage/basePage";
-import styled from "styled-components";
+// import styled from "styled-components";
+import Navbar from "./components/navbar.component";
+import List from "./components/list-expense.component";
 
 export default class BudgetTracker extends React.Component {
   // constructor(props) {
@@ -27,6 +29,7 @@ export default class BudgetTracker extends React.Component {
     // `;
     return (
       <BasePage>
+        <Navbar />
         <div className="bg-info">
           <div className="row">
             <div
@@ -61,6 +64,7 @@ export default class BudgetTracker extends React.Component {
             </div>
           </div>
         </div>
+        <List />
       </BasePage>
     );
   }
