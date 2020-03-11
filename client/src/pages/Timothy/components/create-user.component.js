@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import bcrypt from "bcryptjs";
 
 export default class CreateUser extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ export default class CreateUser extends Component {
   onChangeLName(e) {
     this.setState({
       lname: e.target.value
-    })
+    });
   }
 
   onChangeUsername(e) {
@@ -50,23 +51,24 @@ export default class CreateUser extends Component {
       fname: this.state.fname,
       lname: this.state.lname,
       username: this.state.username,
-      password: this.state.password
+      password: bcrypt.hashSync(this.state.password, bcrypt.genSaltSync(10))
     };
 
     console.log(user);
 
     axios
       .post("http://localhost:5000/user/add", user)
-      .then(res => console.log(res.data));
+      .then(res => console.log(res.data))
+      .catch(err => {
+        !err ? (window.location = "/login") : console.log(err);
+      });
 
-    // this.setState({
-    //   fname: "",
-    //   lname: "",
-    //   username: "",
-    //   password: ""
-    // });
-
-    // window.location = "/login";
+    this.setState({
+      fname: "",
+      lname: "",
+      username: "",
+      password: ""
+    });
   }
 
   render() {
@@ -74,13 +76,14 @@ export default class CreateUser extends Component {
       <div className="container">
         <h3>Register Account</h3>
         <form onSubmit={this.onSubmit}>
-        <div className="form-group">
+          <div className="form-group">
             <label>First name: </label>
             <input
               type="text"
               required
               className="form-control"
               value={this.state.fname}
+              name="fname"
               onChange={this.onChangeFName}
             />
           </div>
@@ -91,6 +94,7 @@ export default class CreateUser extends Component {
               required
               className="form-control"
               value={this.state.lname}
+              name="lname"
               onChange={this.onChangeLName}
             />
           </div>
@@ -101,6 +105,7 @@ export default class CreateUser extends Component {
               required
               className="form-control"
               value={this.state.username}
+              name="username"
               onChange={this.onChangeUsername}
             />
           </div>
@@ -111,15 +116,12 @@ export default class CreateUser extends Component {
               required
               className="form-control"
               value={this.state.password}
+              name="password"
               onChange={this.onChangePassword}
             />
           </div>
           <div className="form-group">
-            <input
-              type="submit"
-              value="Register"
-              className="btn btn-primary"
-            />
+            <input type="submit" value="Register" className="btn btn-primary" />
           </div>
         </form>
       </div>

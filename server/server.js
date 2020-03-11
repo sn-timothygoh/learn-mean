@@ -46,7 +46,14 @@ app.use("/category", categoryRouter);
 //     layoutsDir: "views/layouts/"
 //   })
 // );
-// app.engine('hbs', hbs({extname : 'hbs', defaultLayout : 'mainLayout', layoutsDir : 'views/layouts/'}));
+// app.engine(
+//   "hbs",
+//   hbs({
+//     extname: "hbs",
+//     defaultLayout: "mainLayout",
+//     layoutsDir: "views/layouts/"
+//   })
+// );
 // app.set("view engine", "hbs");
 
 app.listen(5000, () => {

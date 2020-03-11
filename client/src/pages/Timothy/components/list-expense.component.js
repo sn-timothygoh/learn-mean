@@ -6,16 +6,18 @@ const Budget = props => (
   <tr>
     <td>{props.budgets.username}</td>
     <td>{props.budgets.desc}</td>
-    <td>{new Intl.NumberFormat("en-GB", {
-      style: "currency",
-      currency: "MYR"
-    }).format(props.budgets.amount)}</td>
+    <td>
+      {new Intl.NumberFormat("en-GB", {
+        style: "currency",
+        currency: "MYR"
+      }).format(props.budgets.amount)}
+    </td>
     <td>{props.budgets.date}</td>
     <td>
       <Link to={"/budget/edit/" + props.budgets._id}>
-      <i className="fa fa-pencil fa-lg" aria-hidden="true"></i>
-      Edit
-      </Link> |{" "}
+        <i className="fa fa-pencil fa-lg" aria-hidden="true"></i>
+      </Link>{" "}
+      &nbsp;&nbsp;&nbsp;&nbsp;
       <a
         href="#"
         onClick={() => {
@@ -23,7 +25,6 @@ const Budget = props => (
         }}
       >
         <i className="fa fa-trash fa-lg" aria-hidden="true"></i>
-        Delete
       </a>
     </td>
   </tr>
@@ -42,7 +43,7 @@ export default class BudgetTracker extends Component {
     axios
       .get("http://localhost:5000/budget/")
       // .then(response => console.log(response.data))
-      .then(response => this.setState({ budgets : response.data}))
+      .then(response => this.setState({ budgets: response.data }))
       .catch(error => {
         console.log(error);
       });
@@ -72,22 +73,22 @@ export default class BudgetTracker extends Component {
   render() {
     return (
       <div>
-      <br/>
-      <div className="container">
-        <h3>Logged Expenses</h3>
-        <table className="table">
-          <thead className="thead-light">
-            <tr>
-              <th>Username</th>
-              <th>Description</th>
-              <th>Amount</th>
-              <th>Date</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>{this.expenseList()}</tbody>
-        </table>
-      </div>
+        <br />
+        <div className="container">
+          <h3>Logged Expenses</h3>
+          <table className="table">
+            <thead className="thead-light">
+              <tr>
+                <th>Username</th>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Date</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>{this.expenseList()}</tbody>
+          </table>
+        </div>
       </div>
     );
   }

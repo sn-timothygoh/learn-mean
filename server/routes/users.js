@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 let User = require("../model/user.model");
 
 router.route("/").get((req, res) => {
@@ -9,11 +9,11 @@ router.route("/").get((req, res) => {
 });
 
 router.route("/add").post((req, res) => {
+  const fname = req.body.fname;
+  const lname = req.body.lname;
   const username = req.body.username;
-  const firstname = req.body.firstname;
-  const lastname = req.body.lastname;
   const pwd = req.body.password;
-  const user = new User({ username, firstname, lastname, pwd });
+  const user = new User({ fname, lname, username, pwd });
   user
     .save()
     .then(() => res.json("User added."))
@@ -21,19 +21,14 @@ router.route("/add").post((req, res) => {
 });
 
 router.route("/login").post((req, res) => {
-  User.findOne( {username : req.body.username} )
-    .then(user => {
-      if (!user) {
-        res.status(204);
-      } else {
-        bcrypt.compare(req.body.password, user.password)
-          .then(passwordMatch => passwordMatch ? res.sendStatus(200) : res.sendStatus(204));
-      }
-    })
-    .catch(err => res.status(400).JSON("Error: " + err));
-})
-
-// router.get("/", function(req, res, next) {
-//   res.render("Server is now running", { title: "Site under construction" });
-// });
+  User.findOne({ username: req.body.username }).then(user => {
+    if (!user) {
+      res.status(204);
+    } else {
+      bcrypt
+        .compare(req.body.password, user.pwd)
+        .then(match => (match ? res.sendStatus(200) : res.sendStatus(204)));
+    }
+  });
+});
 module.exports = router;

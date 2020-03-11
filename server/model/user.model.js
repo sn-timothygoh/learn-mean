@@ -2,20 +2,20 @@ const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
   {
+    fname: {
+      type: String,
+      match: [/^[a-zA-Z0-9]+$/, "is invalid"],
+      required: true
+    },
+    lname: {
+      type: String,
+      match: [/^[a-zA-Z0-9]+$/, "is invalid"],
+      required: true
+    },
     username: {
       type: String,
       match: [/^[a-zA-Z0-9]+$/, "is invalid"],
       unique: true,
-      required: true
-    },
-    firstName: {
-      type: String,
-      match: [/^[a-zA-Z0-9]+$/, "is invalid"],
-      required: true
-    },
-    lastName: {
-      type: String,
-      match: [/^[a-zA-Z0-9]+$/, "is invalid"],
       required: true
     },
     pwd: {
