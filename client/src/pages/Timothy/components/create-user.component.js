@@ -29,7 +29,7 @@ export default class CreateUser extends Component {
     console.log(user);
 
     axios
-      .post("http://localhost:5000/users/add", user)
+      .post("http://localhost:5000/user/add", user)
       .then(res => console.log(res.data));
 
     this.setState({
@@ -39,7 +39,7 @@ export default class CreateUser extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <h3>Create New User</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
@@ -64,3 +64,5 @@ export default class CreateUser extends Component {
     );
   }
 }
+
+module.export = Component;

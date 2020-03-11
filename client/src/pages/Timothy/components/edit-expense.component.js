@@ -15,8 +15,8 @@ export default class EditExpense extends Component {
 
     this.state = {
       username: "",
-      description: "",
-      duration: 0,
+      desc: "",
+      amount: 0,
       date: new Date(),
       users: []
     };
@@ -28,8 +28,8 @@ export default class EditExpense extends Component {
       .then(response => {
         this.setState({
           username: response.data.username,
-          description: response.data.desc,
-          duration: response.data.amount,
+          desc: response.data.desc,
+          amount: response.data.amount,
           date: new Date(response.data.date)
         });
       })
@@ -38,7 +38,7 @@ export default class EditExpense extends Component {
       });
 
     axios
-      .get("http://localhost:5000/users/")
+      .get("http://localhost:5000/user/")
       .then(response => {
         if (response.data.length > 0) {
           this.setState({
@@ -59,13 +59,13 @@ export default class EditExpense extends Component {
 
   onChangeDesc(e) {
     this.setState({
-      description: e.target.value
+      desc: e.target.value
     });
   }
 
   onChangeAmount(e) {
     this.setState({
-      duration: e.target.value
+      amount: e.target.value
     });
   }
 
@@ -80,8 +80,8 @@ export default class EditExpense extends Component {
 
     const expense = {
       username: this.state.username,
-      description: this.state.desc,
-      duration: this.state.amount,
+      desc: this.state.desc,
+      amount: this.state.amount,
       date: this.state.date
     };
 
@@ -94,12 +94,12 @@ export default class EditExpense extends Component {
       )
       .then(res => console.log(res.data));
 
-    window.location = "/";
+    window.location = "/budget";
   }
 
   render() {
     return (
-      <div>
+      <div className="container">
         <h3>Edit Expense Log</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">

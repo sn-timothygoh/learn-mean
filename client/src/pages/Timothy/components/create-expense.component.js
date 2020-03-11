@@ -8,8 +8,8 @@ export default class CreateExpense extends Component {
     super(props);
 
     this.onChangeUsername = this.onChangeUsername.bind(this);
-    this.onChangeDesc = this.onChangeUsername.bind(this);
-    this.onChangeAmount = this.onChangeDescription.bind(this);
+    this.onChangeDesc = this.onChangeDesc.bind(this);
+    this.onChangeAmount = this.onChangeAmount.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
@@ -46,13 +46,13 @@ export default class CreateExpense extends Component {
 
   onChangeDesc(e) {
     this.setState({
-      description: e.target.value
+      desc: e.target.value
     });
   }
 
   onChangeAmount(e) {
     this.setState({
-      duration: e.target.value
+      amount: e.target.value
     });
   }
 
@@ -67,8 +67,8 @@ export default class CreateExpense extends Component {
 
     const expense = {
       username: this.state.username,
-      description: this.state.desc,
-      duration: this.state.amount,
+      desc: this.state.desc,
+      amount: this.state.amount,
       date: this.state.date
     };
 
@@ -78,13 +78,13 @@ export default class CreateExpense extends Component {
       .post("http://localhost:5000/budget/add", expense)
       .then(res => console.log(res.data));
 
-    window.location = "/";
+    window.location = "/budget";
   }
 
   render() {
     return (
-      <div>
-        <h3>Create New Exercise Log</h3>
+      <div className="container">
+        <h3>Record New Expense</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label>Username: </label>
@@ -145,3 +145,4 @@ export default class CreateExpense extends Component {
     );
   }
 }
+module.export = Component;

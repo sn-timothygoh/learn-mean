@@ -52,6 +52,12 @@ export default class TopBar extends React.Component {
             <NavItem>
               <NavLink href="/budget">Budget Tracker</NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink href="/budget/create">Add Expense</NavLink>
+            </NavItem>
+            <NavItem>
+              <NavLink href="/user">Create User</NavLink>
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>
