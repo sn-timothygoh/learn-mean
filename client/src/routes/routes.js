@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import LandingPage from "../pages/LandingPage/landingPage";
+import Login from "../pages/login";
 import MainPage from "../pages/YC_Liew/PortFolio";
 import LandingKY from "../pages/ChokKahYang/landingKY";
 import VinLandingPage from "../pages/ChanVinSheng/VinLandingPage";
@@ -27,6 +28,7 @@ export default class Routes extends React.Component {
     return (
       <BrowserRouter>
         <Switch>
+          <Route exact path="/login" component={Login} />
           <Route exact path="/" component={LandingPage} />
           <Route path="/Timothy" component={Timothy} />
           <Route exact path="/LiewYihChan" component={MainPage} />

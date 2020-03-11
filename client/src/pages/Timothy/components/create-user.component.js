@@ -5,12 +5,30 @@ export default class CreateUser extends Component {
   constructor(props) {
     super(props);
 
+    this.onChangeFName = this.onChangeFName.bind(this);
+    this.onChangeLName = this.onChangeLName.bind(this);
     this.onChangeUsername = this.onChangeUsername.bind(this);
+    this.onChangePassword = this.onChangePassword.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      username: ""
+      fname: "",
+      lname: "",
+      username: "",
+      password: ""
     };
+  }
+
+  onChangeFName(e) {
+    this.setState({
+      fname: e.target.value
+    });
+  }
+
+  onChangeLName(e) {
+    this.setState({
+      lname: e.target.value
+    })
   }
 
   onChangeUsername(e) {
@@ -19,11 +37,20 @@ export default class CreateUser extends Component {
     });
   }
 
+  onChangePassword(e) {
+    this.setState({
+      password: e.target.value
+    });
+  }
+
   onSubmit(e) {
     e.preventDefault();
 
     const user = {
-      username: this.state.username
+      fname: this.state.fname,
+      lname: this.state.lname,
+      username: this.state.username,
+      password: this.state.password
     };
 
     console.log(user);
@@ -32,16 +59,41 @@ export default class CreateUser extends Component {
       .post("http://localhost:5000/user/add", user)
       .then(res => console.log(res.data));
 
-    this.setState({
-      username: ""
-    });
+    // this.setState({
+    //   fname: "",
+    //   lname: "",
+    //   username: "",
+    //   password: ""
+    // });
+
+    // window.location = "/login";
   }
 
   render() {
     return (
       <div className="container">
-        <h3>Create New User</h3>
+        <h3>Register Account</h3>
         <form onSubmit={this.onSubmit}>
+        <div className="form-group">
+            <label>First name: </label>
+            <input
+              type="text"
+              required
+              className="form-control"
+              value={this.state.fname}
+              onChange={this.onChangeFName}
+            />
+          </div>
+          <div className="form-group">
+            <label>Last name: </label>
+            <input
+              type="text"
+              required
+              className="form-control"
+              value={this.state.lname}
+              onChange={this.onChangeLName}
+            />
+          </div>
           <div className="form-group">
             <label>Username: </label>
             <input
@@ -53,9 +105,19 @@ export default class CreateUser extends Component {
             />
           </div>
           <div className="form-group">
+            <label>Password: </label>
+            <input
+              type="password"
+              required
+              className="form-control"
+              value={this.state.password}
+              onChange={this.onChangePassword}
+            />
+          </div>
+          <div className="form-group">
             <input
               type="submit"
-              value="Create User"
+              value="Register"
               className="btn btn-primary"
             />
           </div>

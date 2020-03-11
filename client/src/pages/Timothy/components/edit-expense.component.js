@@ -131,7 +131,7 @@ export default class EditExpense extends Component {
             />
           </div>
           <div className="form-group">
-            <label>Duration (in minutes): </label>
+            <label>Amount (RM): </label>
             <input
               type="text"
               className="form-control"

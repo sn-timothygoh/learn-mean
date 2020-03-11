@@ -13,7 +13,7 @@ const Budget = props => (
     <td>{props.budgets.date}</td>
     <td>
       <Link to={"/budget/edit/" + props.budgets._id}>
-      <i class="fa fa-pencil fa-lg" aria-hidden="true"></i>
+      <i className="fa fa-pencil fa-lg" aria-hidden="true"></i>
       Edit
       </Link> |{" "}
       <a
@@ -22,7 +22,7 @@ const Budget = props => (
           props.deleteExpense(props.budgets._id);
         }}
       >
-        <i class="fa fa-trash fa-lg" aria-hidden="true"></i>
+        <i className="fa fa-trash fa-lg" aria-hidden="true"></i>
         Delete
       </a>
     </td>

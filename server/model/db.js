@@ -6,7 +6,7 @@ var uri =
   "mongodb+srv://timothy:timothy98@cluster0-w2tni.mongodb.net/BudgetTracker?retryWrites=true&w=majority";
 
 mongoose.connect(uri,
-  { useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true},
+  { useNewUrlParser: true, useFindAndModify: false, useCreateIndex: true, useUnifiedTopology: true},
   error => {
     if (!error) {
       console.log("Connection to Mongodb has established");
@@ -15,4 +15,6 @@ mongoose.connect(uri,
     }
   }
 );
-require("../model/budget.model");
+require("./budget.model");
+require("./category.model");
+require("./user.model");
