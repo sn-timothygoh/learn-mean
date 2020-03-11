@@ -9,12 +9,19 @@ router.route("/").get((req, res) => {
 
 router.route("/add").post((req, res) => {
   const username = req.body.username;
-  const user = new User({ username });
+  const firstname = req.body.firstname;
+  const lastname = req.body.lastname;
+  const pwd = req.body.password;
+  const user = new User({ username, firstname, lastname, pwd });
   user
     .save()
     .then(() => res.json("User added."))
     .catch(err => res.status(400).json("Error: " + err));
 });
+
+// router.route("/login").post((req, res) => {
+//   User.findOne()
+// })
 
 // router.get("/", function(req, res, next) {
 //   res.render("Server is now running", { title: "Site under construction" });
