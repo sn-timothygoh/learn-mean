@@ -49,7 +49,7 @@ export default class Login extends Component {
       this.setState({
         loginSuccess: true
       });
-      window.location = "/budget";
+      window.location = "/feed";
     }
 
     // await axios.post("http://localhost:5000/login", user).then(res => {

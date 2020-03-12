@@ -58,6 +58,9 @@ export default class TopBar extends React.Component {
             <NavItem>
               <NavLink href="/user">Create User</NavLink>
             </NavItem>
+            <NavItem>
+              <NavLink href="/feed">News Feed</NavLink>
+            </NavItem>
           </Nav>
         </Collapse>
       </Navbar>

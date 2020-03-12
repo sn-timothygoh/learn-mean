@@ -17,6 +17,7 @@ import ListExpense from "../pages/Timothy/components/list-expense.component";
 import CreateExpense from "../pages/Timothy/components/create-expense.component";
 import EditExpense from "../pages/Timothy/components/edit-expense.component";
 import CreateUser from "../pages/Timothy/components/create-user.component";
+import NewsFeed from "../pages/Timothy/components/newsfeed.component";
 
 export default class Routes extends React.Component {
   constructor(props) {
@@ -46,6 +47,7 @@ export default class Routes extends React.Component {
           />
           <Route exact path="/Dota2/:id" component={itemDetails} />
           <Route exact path="/DotaAPI/match/:id" component={MatchDetail} />
+          <Route path="/feed" component={NewsFeed} />
           <Route path="/budget/create" component={CreateExpense} />
           <Route path="/budget/edit/:id" component={EditExpense} />
           <Route path="/budget" component={ListExpense} />
