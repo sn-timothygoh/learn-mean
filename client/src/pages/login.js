@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
-import LoginService from "./loginService";
+// import LoginService from "./loginService";
+import cogoToast from "cogo-toast";
 
 export default class Login extends Component {
   constructor(props) {
@@ -29,46 +30,33 @@ export default class Login extends Component {
     });
   }
 
-  onSubmit = async e => {
+  onSubmit(e){
     e.preventDefault();
 
-    const user = {
+    const authUser = {
       username: this.state.username,
       password: this.state.password
     };
 
-    console.log(user);
+    console.log(authUser);
 
-    const loginRes = await LoginService(user);
+    // const loginRes = LoginService(authUser);
 
-    if (loginRes !== 200) {
-      this.setState({
-        loginSuccess: false
+    axios.post("http://localhost:5000/user/login", authUser).then(res => {
+    console.log(res.headers['auth-header']);
+    sessionStorage.setItem("jwt-token", res.headers['auth-header']);
+    cogoToast.success('Logged in', {hideAfter : 3})
+      .then(() => {
+        window.location = "/feed";
+      })
+      .catch(err => {
+        cogoToast.error('Login failed, please check your credentials and try again.')
+          .then(() => this.setState({
+            username: "",
+            password: ""
+          }));
       });
-    } else {
-      this.setState({
-        loginSuccess: true
-      });
-      window.location = "/feed";
-    }
-
-    // await axios.post("http://localhost:5000/login", user).then(res => {
-    //   if (res.status(200)) {
-    //     this.setState({
-    //       username: "",
-    //       password: ""
-    //     });
-    //     window.location = "/budget";
-    //   } else {
-    //     alert("login failed");
-    //     this.setState({
-    //       username: "",
-    //       password: ""
-    //     });
-    //   }
-    // });
-
-    // window.location = "/budget";
+  });
   };
 
   render() {

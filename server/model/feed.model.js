@@ -1,13 +1,11 @@
 const mongoose = require("mongoose");
+require("./user.model");
 
 const feedSchema = new mongoose.Schema({
-    username : {
-        type: String
-    },
-    title : {
-        type: String,
-        required : true
-    },
+    user : [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user'
+    }],
     content : {
         type: String,
         required: true
@@ -25,4 +23,4 @@ const feedSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model("Feed", feedSchema);
+module.exports = mongoose.model("user", feedSchema, "feeds");

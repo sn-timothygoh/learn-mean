@@ -13,8 +13,7 @@ router.route("/").get((req, res) => {
 router.post('/add', verify, async(req, res) => {
     console.log(req.user);
     const feed = new Feed ({
-        username : req.user._id,
-        title: req.body.title,
+        user : req.user._id,
         content: req.body.content
     });
 

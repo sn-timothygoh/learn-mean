@@ -1,11 +1,14 @@
 const router = require('express').Router();
 const verify = require('./verifyToken'); 
 const redis = require("redis");
-
-client = redis.createClient(6379, "127.0.0.1");
+const client = redis.createClient(6379, "127.0.0.1");
 
 client.on("error", function (err) {
   console.log("Error " + err);
+});
+
+client.on('connect', function() {
+    console.log('Redis client connected');
 });
 
 router.post('/updownstate', verify , async (req, res) => {

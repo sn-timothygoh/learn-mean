@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       match: [/^[a-zA-Z0-9]+$/, "is invalid"],
       unique: true,
+      trim: true,
       required: true
     },
     pwd: {

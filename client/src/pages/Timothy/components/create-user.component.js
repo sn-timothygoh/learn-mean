@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import bcrypt from "bcryptjs";
+import cogoToast from "cogo-toast";
 
 export default class CreateUser extends Component {
   constructor(props) {
@@ -58,17 +59,29 @@ export default class CreateUser extends Component {
 
     axios
       .post("http://localhost:5000/user/add", user)
-      .then(res => console.log(res.data))
+      .then(res => {
+        const authData = {
+          username: this.state.username,
+          password: this.state.password
+        }
+        axios.post('http://localhost:5000/user/login', authData)
+          .then(res => {
+            console.log(res.headers['auth-header']);
+            sessionStorage.setItem("jwt-token", res.headers['auth-header']);
+            cogoToast.success('Logged in', {hideAfter : 3})
+              .then(() => window.location = "/feed");
+          })
+          .catch(err => {});
+      })
       .catch(err => {
-        !err ? (window.location = "/login") : console.log(err);
+        console.log(err);
+        this.setState({
+          fname: "",
+          lname: "",
+          username: "",
+          password: ""
+        });
       });
-
-    this.setState({
-      fname: "",
-      lname: "",
-      username: "",
-      password: ""
-    });
   }
 
   render() {

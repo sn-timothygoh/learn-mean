@@ -106,9 +106,9 @@ class Feed extends Component {
           <div className="row">
             <div className="col-md-10 px-3">
               <div className="card-block px-3">
-                <h5 className="card-title text-dark" style={{marginTop: '10px', 'fontWeight':'bolder'}}>{this.props.feed.user.firstName} {this.props.feed.user.lastName}</h5>
+                <h5 className="card-title text-dark" style={{marginTop: '10px', 'fontWeight':'bolder'}}>{this.props.feed.user}</h5>
                 <p className="card-text" style={{fontSize: '16px'}}>{this.props.feed.content }</p>
-                <p className="text-muted" style={{fontSize: '13px'}}><img src={process.env.PUBLIC_URL + '/logos/clock.png'} style={{width: '13px', height: '13px'}} />&nbsp;&nbsp;{moment(Date.parse(this.props.feed.createdAt)).fromNow()}</p>
+                <p className="text-muted" style={{fontSize: '13px'}}><img src='../../logos/clock.png' style={{width: '13px', height: '13px'}} />&nbsp;&nbsp;{moment(Date.parse(this.props.feed.createdAt)).fromNow()}</p>
               </div>
             </div>
             <div className="col-md-2 px-3">

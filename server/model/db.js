@@ -25,3 +25,4 @@ mongoose.connect(
 require("./budget.model");
 require("./category.model");
 require("./user.model");
+require("./feed.model");

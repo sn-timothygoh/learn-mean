@@ -38,7 +38,7 @@ export default class EditExpense extends Component {
       });
 
     axios
-      .get("http://localhost:5000/user/")
+      .get("http://localhost:5001/user/")
       .then(response => {
         if (response.data.length > 0) {
           this.setState({
@@ -89,7 +89,7 @@ export default class EditExpense extends Component {
 
     axios
       .post(
-        "http://localhost:5000/budget/update/" + this.props.match.params.id,
+        "http://localhost:5001/budget/update/" + this.props.match.params.id,
         expense
       )
       .then(res => console.log(res.data));
