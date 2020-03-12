@@ -11,17 +11,17 @@ router.route("/").get((req, res) => {
     .catch(err => res.status(400).json("Error: " + err));
 });
 
-router.route("/add").post( async (req, res) => {
-  const user = new User({ 
-    fname : req.body.fname,
-    lname : req.body.lname,
-    username : req.body.username,
-    pwd : req.body.password
+router.route("/add").post(async (req, res) => {
+  const user = new User({
+    fname: req.body.fname,
+    lname: req.body.lname,
+    username: req.body.username,
+    pwd: req.body.password
   });
   try {
     const savedUser = await user.save();
     res.send({
-      user : savedUser._id
+      user: savedUser._id
     });
   } catch (err) {
     console.log(err);
@@ -29,7 +29,7 @@ router.route("/add").post( async (req, res) => {
   }
 });
 
-router.route("/login").post( async (req, res) => {
+router.route("/login").post(async (req, res) => {
   await User.findOne({ username: req.body.username }).then(user => {
     if (!user) {
       res.status(204);
@@ -39,11 +39,9 @@ router.route("/login").post( async (req, res) => {
         .compare(req.body.password, user.pwd)
         .then(match => (match ? res.sendStatus(200) : res.sendStatus(204)));
 
-      const token = jwt.sign({ id : user._id},TOKEN_SECRET);
-      console.log("secret: " + TOKEN_SECRET);
-      console.log(token);
-      res.header('auth-header', token);
-      res.json({success: true, message: 'Logged in'});
+      const token = jwt.sign({ _id: user._id }, TOKEN_SECRET);
+      res.header("auth-header", token);
+      res.json({ success: true, message: "Logged in" });
     }
   });
 });

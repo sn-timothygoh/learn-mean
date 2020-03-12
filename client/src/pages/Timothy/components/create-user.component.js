@@ -63,13 +63,15 @@ export default class CreateUser extends Component {
         const authData = {
           username: this.state.username,
           password: this.state.password
-        }
-        axios.post('http://localhost:5000/user/login', authData)
+        };
+        axios
+          .post("http://localhost:5000/user/login", authData)
           .then(res => {
-            console.log(res.headers['auth-header']);
-            sessionStorage.setItem("jwt-token", res.headers['auth-header']);
-            cogoToast.success('Logged in', {hideAfter : 3})
-              .then(() => window.location = "/feed");
+            console.log(res.headers["auth-header"]);
+            sessionStorage.setItem("jwt-token", res.headers["auth-header"]);
+            cogoToast
+              .success("Logged in", { hideAfter: 3 })
+              .then(() => (window.location = "/feed"));
           })
           .catch(err => {});
       })
