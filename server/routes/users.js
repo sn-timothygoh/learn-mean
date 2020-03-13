@@ -34,7 +34,7 @@ router.route("/login").post(async (req, res) => {
     if (!user) {
       res.status(204);
     } else {
-      console.log("user: " + user);
+      console.log("user " + user.username + " is loggin in");
       bcrypt
         .compare(req.body.password, user.pwd)
         .then(match => (match ? res.sendStatus(200) : res.sendStatus(204)));

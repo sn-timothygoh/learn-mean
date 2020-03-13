@@ -5,7 +5,7 @@ const verify = require("./verifyToken");
 router.route("/").get((req, res) => {
   Feed.find()
     .populate("user")
-    .sort({ createdAt: -1 })
+    .sort({ "createdAt": -1 })
     .then(feeds => res.json(feeds))
     .catch(err => res.status(400).json("Error: " + err));
 });
@@ -19,7 +19,7 @@ router.post("/add", verify, async (req, res) => {
 
   try {
     const savedFeed = await feed.save();
-    const savedFeedWithUserData = await Feed.findById(savedFeed._id).populated(
+    const savedFeedWithUserData = await Feed.findById(savedFeed._id).populate(
       "user"
     );
     res.send(savedFeedWithUserData);
@@ -31,11 +31,11 @@ router.post("/add", verify, async (req, res) => {
 router.put("/update", verify, async (req, res) => {
   console.log(req.user);
   try {
-    await Feed.findById(req.body._id, {
+    await Feed.findByIdAndUpdate(req.body._id, {
       upvote: req.body.upvote,
       downvote: req.body.downvote
     });
-    res.send({ success: true });
+    res.send({ "success": true });
   } catch {
     req.sendStatus(400);
   }

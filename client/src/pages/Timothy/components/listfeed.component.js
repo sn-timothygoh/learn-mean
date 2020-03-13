@@ -2,11 +2,7 @@ import React, { Component } from "react";
 import cogoToast from "cogo-toast";
 import moment from "moment";
 import axios from "axios";
-import Like from "../../../logos/like.png";
-import Liked from "../../../logos/liked.png";
-import Dislike from "../../../logos/dislike.png";
-import Disliked from "../../../logos/disliked.png";
-import Clock from "../../../logos/clock.png";
+import Clock from "../../logos/clock.png";
 
 class Feed extends Component {
   constructor(props) {
@@ -28,7 +24,7 @@ class Feed extends Component {
     } else {
       const headers = {
         headers: {
-          Accept: "application/json",
+          "Accept": "application/json",
           "Content-type": "application/json",
           "auth-header": jwt
         }
@@ -36,7 +32,7 @@ class Feed extends Component {
       axios
         .post(
           "http://localhost:5000/cache/updownstate",
-          { feedid: this.props.feed._id },
+          { "feedid": this.props.feed._id },
           headers
         )
         .then(resp => {
@@ -48,7 +44,7 @@ class Feed extends Component {
 
   handleUpvoteDownvote(e) {
     console.log(e.target.name);
-    // console.log(this.props);
+    console.log(this.props);
     const json = { type: e.target.name };
     json.data = this.props;
     console.log(json);
@@ -86,7 +82,7 @@ class Feed extends Component {
         this.props.socket.send(JSON.stringify(json));
         const headers = {
           headers: {
-            Accept: "application/json",
+            "Accept": "application/json",
             "Content-type": "application/json",
             "auth-header": jwt
           }
@@ -101,7 +97,7 @@ class Feed extends Component {
               .put(
                 "http://localhost:5000/cache/updownstate",
                 {
-                  feedid: json.data.feed._id,
+                  "feedid": json.data.feed._id,
                   upvoted: this.state.upvoted ? 1 : 0
                 },
                 headers
@@ -115,6 +111,10 @@ class Feed extends Component {
   }
 
   render() {
+
+    let likeimgurl = this.state.upvoted ? '/liked.png' : '/like.png';
+      let dislikeimgurl = this.state.downvoted ? './disliked.png' : './dislike.png';
+
     return (
       <div className="card">
         <div className="row">
@@ -124,7 +124,7 @@ class Feed extends Component {
                 className="card-title text-dark"
                 style={{ marginTop: 10, fontWeight: 400 }}
               >
-                {this.props.feed.user}
+                {this.props.feed.user.fname} {this.props.feed.user.lname}
               </h5>
               <p className="card-text" style={{ fontSize: 16 }}>
                 {this.props.feed.content}
@@ -146,7 +146,7 @@ class Feed extends Component {
                   disabled={this.state.upvoted}
                   onClick={this.handleUpvoteDownvote}
                   name="upvote"
-                  src={this.state.upvoted ? { Liked } : { Like }}
+                  src={likeimgurl}
                   alt="upvote"
                   width="30"
                   height="30"
@@ -169,7 +169,7 @@ class Feed extends Component {
                   disabled={this.state.downvoted}
                   onClick={this.handleUpvoteDownvote}
                   name="downvote"
-                  src={this.state.downvoted ? { Disliked } : { Dislike }}
+                  src={dislikeimgurl}
                   alt="downvote"
                   width="30"
                   height="30"
@@ -207,7 +207,7 @@ export default class ListFeed extends Component {
       .catch(err => console.log(err));
   }
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     const data = JSON.parse(nextProps.feed);
     console.log(data.data);
     if (data.type === "upvote" || data.type === "downvote") {
