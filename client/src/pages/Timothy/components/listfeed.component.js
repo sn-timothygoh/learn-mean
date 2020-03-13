@@ -66,7 +66,7 @@ class Feed extends Component {
       } else {
         if (e.target.name === "upvote") {
           if (this.state.downvoted) {
-            json.data.feed.downvotes--;
+            json.data.feed.downvote--;
             this.setState({ downvoted: false });
           }
           json.data.feed.upvote++;
