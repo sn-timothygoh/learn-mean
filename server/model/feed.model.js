@@ -3,14 +3,13 @@ require("./user.model");
 
 const feedSchema = new mongoose.Schema(
   {
-    user: [
-      {
+    user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-      }
-    ],
+    },
     content: {
       type: String,
+      trim: true,
       required: true
     },
     upvote: {

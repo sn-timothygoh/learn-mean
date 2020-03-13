@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import cogoToast from "cogo-toast";
 import moment from "moment";
 import axios from "axios";
-import Clock from "../../logos/clock.png";
+// import Clock from "../../logos/clock.png";
 
 class Feed extends Component {
   constructor(props) {
@@ -69,14 +69,14 @@ class Feed extends Component {
             json.data.feed.downvotes--;
             this.setState({ downvoted: false });
           }
-          json.data.feed.upvotes++;
+          json.data.feed.upvote++;
           this.setState({ upvoted: true });
         } else {
           if (this.state.upvoted) {
-            json.data.feed.upvotes--;
+            json.data.feed.upvote--;
             this.setState({ upvoted: false });
           }
-          json.data.feed.downvotes++;
+          json.data.feed.downvote++;
           this.setState({ downvoted: true });
         }
         this.props.socket.send(JSON.stringify(json));
@@ -111,9 +111,8 @@ class Feed extends Component {
   }
 
   render() {
-
-    let likeimgurl = this.state.upvoted ? '/liked.png' : '/like.png';
-      let dislikeimgurl = this.state.downvoted ? './disliked.png' : './dislike.png';
+    let likeimgurl = this.state.upvoted ? process.env.PUBLIC_URL + '/logos/liked.png' : process.env.PUBLIC_URL + '/logos/like.png';
+    let dislikeimgurl = this.state.downvoted ? process.env.PUBLIC_URL + '/logos/disliked.png' : process.env.PUBLIC_URL + '/logos/dislike.png';
 
     return (
       <div className="card">
@@ -124,13 +123,14 @@ class Feed extends Component {
                 className="card-title text-dark"
                 style={{ marginTop: 10, fontWeight: 400 }}
               >
-                {this.props.feed.user.fname} {this.props.feed.user.lname}
+                <span>{this.props.feed.user.fname} {this.props.feed.user.lname}</span>
+                {/* {console.log(this.props.feed.user._id)}; */}
               </h5>
               <p className="card-text" style={{ fontSize: 16 }}>
                 {this.props.feed.content}
               </p>
               <p className="text-muted" style={{ fontSize: 13 }}>
-                <img src={Clock} style={{ width: 13, height: 13 }} />
+                <img src={process.env.PUBLIC_URL + '/logos/clock.png'} style={{ width: 13, height: 13 }} />
                 &nbsp;&nbsp;
                 {moment(Date.parse(this.props.feed.createdAt)).fromNow()}
               </p>
@@ -159,7 +159,7 @@ class Feed extends Component {
                     verticalAlign: "6px"
                   }}
                 >
-                  &nbsp;&nbsp;&nbsp;{this.props.feed.upvotes}
+                  &nbsp;&nbsp;&nbsp;{this.props.feed.upvote}
                 </span>{" "}
               </div>
               <div>
@@ -182,7 +182,7 @@ class Feed extends Component {
                     verticalAlign: "6px"
                   }}
                 >
-                  &nbsp;&nbsp;&nbsp;{this.props.feed.downvotes}
+                  &nbsp;&nbsp;&nbsp;{this.props.feed.downvote}
                 </span>
                 <br />
               </div>
