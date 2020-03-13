@@ -1,5 +1,5 @@
 # learn-mean
-Application tested on Ubuntu
+Platform tested: ``Ubuntu and Windows``
 
 ### Required Component
 1. Redis
