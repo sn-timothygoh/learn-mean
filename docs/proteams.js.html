@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>proteams.js</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <script src="scripts/search.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/3.4.5/fuse.min.js"></script> -->
+    <script src="scripts/fuse.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/ionicons.min.css">
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+    <link type="text/css" rel="stylesheet" href="styles/clean-jsdoc-theme.css">
+    
+    
+    
+<svg aria-hidden="true" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display:none">
+    <defs>
+        <symbol id="copy-icon" viewbox="0 0 488.3 488.3">
+            <g>
+                <path d="M314.25,85.4h-227c-21.3,0-38.6,17.3-38.6,38.6v325.7c0,21.3,17.3,38.6,38.6,38.6h227c21.3,0,38.6-17.3,38.6-38.6V124    C352.75,102.7,335.45,85.4,314.25,85.4z M325.75,449.6c0,6.4-5.2,11.6-11.6,11.6h-227c-6.4,0-11.6-5.2-11.6-11.6V124    c0-6.4,5.2-11.6,11.6-11.6h227c6.4,0,11.6,5.2,11.6,11.6V449.6z"/>
+                <path d="M401.05,0h-227c-21.3,0-38.6,17.3-38.6,38.6c0,7.5,6,13.5,13.5,13.5s13.5-6,13.5-13.5c0-6.4,5.2-11.6,11.6-11.6h227    c6.4,0,11.6,5.2,11.6,11.6v325.7c0,6.4-5.2,11.6-11.6,11.6c-7.5,0-13.5,6-13.5,13.5s6,13.5,13.5,13.5c21.3,0,38.6-17.3,38.6-38.6    V38.6C439.65,17.3,422.35,0,401.05,0z"/>
+            </g>
+        </symbol>
+    </defs>
+</svg>
+
+</head>
+<body>
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html"><div class="text">Home</div></a></h2><div class="search-box"><input type="text" placeholder="Search..." id="search-box" /><div class="search-item-container" id="search-item-container"><ul class="search-item-ul" id="search-item-ul"></ul></div></div><div class="sidebar-list-div"><h3>Classes</h3><ul><li><a href="module.exports_module.exports.html">exports</a></li></ul><h3><a href="global.html">Global</a></h3><ul><li><a href="global.html#componentDidMount">componentDidMount</a></li><li><a href="global.html#render">render</a></li></ul></div>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">proteams.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import "./proteam.css";
+import { Link } from "react-router-dom";
+
+const teamIknow = [
+  "OG",
+  "TNC Predator",
+  "Vici Gaming",
+  "Team Secret",
+  "Invictus Gaming",
+  "Fnatic"
+];
+export default class proTeam extends React.Component {
+  /**
+   * constructor
+   *
+   * @object  @props  parent props
+   * @object  @state  component state
+   */
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      items: [],
+      isLoaded: false
+    };
+  }
+
+  /**
+   * componentDidMount
+   *
+   * Fetch json array of objects from given url and update state.
+   */
+  componentDidMount() {
+    var teamArr = [];
+    fetch("https://api.opendota.com/api/teams")
+      .then(res => res.json())
+      .then(json => {
+        for (const a in json) {
+          for (const arr in teamIknow) {
+            if (json[a].name.toLowerCase() === teamIknow[arr].toLowerCase()) {
+              teamArr.push(json[a]);
+            }
+          }
+        }
+        this.setState({
+          items: teamArr,
+          isLoaded: true
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  /**
+   * render
+   *
+   * Render UI
+   */
+  render() {
+    const { isLoaded, items } = this.state;
+
+    if (!isLoaded) return &lt;div>Loading...&lt;/div>;
+
+    return (
+      &lt;div className="slideshow">
+        &lt;h3>Top Teams&lt;/h3>
+        &lt;div className="slideshow-container">
+          &lt;ul>
+            &lt;div className="slideshow-slide">
+              {items.map(item => (
+                &lt;Link to={`/team/${item.team_id}/players`}>
+                  &lt;div className="teamProfile">
+                    &lt;li key={item.team_id}>
+                      &lt;div className="slideshow-img">
+                        &lt;img src={item.logo_url} alt="" />
+                      &lt;/div>
+                      &lt;div className="teamDetail">
+                        &lt;div className="teamName">{item.name}&lt;/div>
+                        &lt;div className="result-container">
+                          &lt;div className="result win">Win: {item.wins}&lt;/div>
+                          &lt;div className="result lose">Lose: {item.losses}&lt;/div>
+                        &lt;/div>
+                      &lt;/div>
+                    &lt;/li>
+                  &lt;/div>
+                &lt;/Link>
+              ))}
+            &lt;/div>
+          &lt;/ul>
+        &lt;/div>
+      &lt;/div>
+    );
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+  
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+<script>
+var list = [{"title":"exports","link":"<a href=\"module.exports_module.exports.html\">exports</a>"},{"title":"componentDidMount","link":"<a href=\"global.html#componentDidMount\">Global &rtrif; componentDidMount</a>"},{"title":"render","link":"<a href=\"global.html#render\">Global &rtrif; render</a>"}];
+setupSearch(list)
+</script>
+
+ 
+<script type="text/javascript" src="scripts/misc.js"></script>
+</body>
+</html>
