@@ -1,4 +1,6 @@
-./package-lock
-./node_modules
-./client/node_modules
-./server/node_modules
+package-lock
+node_modules/
+client/node_modules/
+server/node_modules/
+out/
+server
