@@ -2,12 +2,12 @@
 该项目是由 **SNSoft Sdn Bhd** 推出的一项培训功课，主要培训培训生适应后端开发的环境。
 
 #### MERN:
-| | | |
-| ---- | - | ------- |
-| [**M** ongoDB](https://www.mongodb.com) | | - 跨平台文档式数据库 |
-| [**E** xpressJS](https://expressjs.com/en/starter/basic-routing.html) | | - JS框架，后端路由器 |
-| [**R** eactJS](https://reactjs.org/docs/getting-started.html) | | - 前端JS框架 |
-| [**N** odeJS](https://nodejs.org/en/docs/) | | - JS 运行环境 |
+| | |
+| ---- | ------- |
+| [**M** ongoDB](https://www.mongodb.com) | - 跨平台文档式数据库 |
+| [**E** xpressJS](https://expressjs.com/en/starter/basic-routing.html) | - JS框架，后端路由器 |
+| [**R** eactJS](https://reactjs.org/docs/getting-started.html) | - 前端JS框架 |
+| [**N** odeJS](https://nodejs.org/en/docs/) | - JS 运行环境 |
 
 
 # 使用说明
@@ -36,3 +36,52 @@
 
 
 # 参数参考
+## 用户（User）参数
+| 参数 | 种类 | 必填 | 内容 / 注解 |
+| - | - | - | - |
+| _id | String | 自动生成 | N/A |
+| fname | String | 是 | N/A |
+| lname | String | 是 | N/A |
+| username | String | 是 | N/A |
+| pwd | String | 是 | N/A |
+| createdAt | Timestamp | 自动生成 | N/A |
+| updatedAt | Timestamp | 自动生成 | N/A |
+
+## 贴文（Feeds）参数
+| 参数 | 种类 | 必填 | 内容 / 注解 |
+| - | - | - | - |
+| _id | String | 自动生成 | N/A |
+| user | Array | 否 | N/A |
+| upvote | Number | 否 | N/A |
+| downvote | Number | 否 | N/A |
+| content | String | 是 | N/A |
+| createdAt | Timestamp | 自动生成 | N/A |
+| updatedAt | Timestamp | 自动生成 | N/A |
+
+
+# 代码运作
+## 用户
+### 注册
+```js
+    // ./server/routes/users.js
+    
+    router.route("/add").post(async (req, res) => {
+        const user = new User({
+            fname: req.body.fname,
+            lname: req.body.lname,
+            username: req.body.username,
+            pwd: req.body.password
+        });
+        try {
+            const savedUser = await user.save();
+            res.send({
+                user: savedUser._id
+            });
+        } catch (err) {
+            console.log(err);
+            res.sendStatus(400);
+        }
+    });
+```
+
+## 贴文
