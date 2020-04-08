@@ -1,16 +1,16 @@
-import React from "react";
-import "./HeroApi.css";
-import callApi from "../DotaAPI/FetchFunction";
+import React from 'react'
+import './HeroApi.css'
+import callApi from '../DotaAPI/FetchFunction'
 
 export default class HeroAbilities extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       items: [],
       abilities: [],
       heroName: this.props.heroName,
-      isLoaded: false
-    };
+      isLoaded: false,
+    }
   }
 
   async componentDidMount() {
@@ -30,33 +30,31 @@ export default class HeroAbilities extends React.Component {
     //   });
 
     this.setState({
-      items: await callApi("/constants/hero_abilities"),
-      abilities: await callApi("/constants/abilities"),
-      isLoaded: true
-    });
+      items: await callApi('/constants/hero_abilities'),
+      abilities: await callApi('/constants/abilities'),
+      isLoaded: true,
+    })
   }
 
   render() {
-    const { isLoaded, heroName, items, abilities } = this.state;
-    let heroAbilities = [];
-    let getHeroAbilities;
+    const { isLoaded, heroName, items, abilities } = this.state
+    let heroAbilities = []
+    let getHeroAbilities
     if (isLoaded) {
-      for (const properties in items[heroName]["abilities"]) {
-        heroAbilities.push(items[heroName]["abilities"][properties]);
+      for (const properties in items[heroName]['abilities']) {
+        heroAbilities.push(items[heroName]['abilities'][properties])
       }
 
       const filterAbilities = heroAbilities.filter(
-        nullAbilities => nullAbilities !== "generic_hidden"
-      );
+        nullAbilities => nullAbilities !== 'generic_hidden',
+      )
 
-      getHeroAbilities = filterAbilities.map(element => abilities[element]);
-
-      console.log(getHeroAbilities);
+      getHeroAbilities = filterAbilities.map(element => abilities[element])
     }
 
-    if (!isLoaded) return <div>Loading...</div>;
+    if (!isLoaded) return <div>Loading...</div>
 
-    const add = "http://cdn.dota2.com/";
+    const add = 'http://cdn.dota2.com/'
 
     return (
       <div>
@@ -69,6 +67,6 @@ export default class HeroAbilities extends React.Component {
           ))}
         </ul>
       </div>
-    );
+    )
   }
 }

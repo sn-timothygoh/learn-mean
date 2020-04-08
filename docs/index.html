@@ -296,7 +296,7 @@
         &quot;updatedAt&quot;: 2020-03-11T09:16:28.809+00:00
     }
 </code></pre>
-<p>用户密码与数据库之所以有分别是因为在前端应用了<code>bcrypt</code>来让密码复杂化，可参考<code>./client/src/pages/Timothy/components/create-user.component.js</code>。</p>
+<p>用户密码与数据库之所以有分别是因为在前端应用了<code>bcrypt</code>来让密码复杂化，可参考<code>./client/src/pages/Timothy/components/create-user.component.js</code>。用户注册成功后将自动跳转之贴文界（News Feed）。</p>
 <pre class="prettyprint source lang-js"><code>    // ./client/src/pages/Timothy/components/create-user.component.js
 
     import bcrypt from &quot;bcryptjs&quot;;
@@ -320,6 +320,8 @@
 <p>注册不能成功只源于用户提供的质询不足，返还<code>status: 400</code>。</p>
 <h3>登录</h3>
 <pre class="prettyprint source lang-js"><code>    // ./server/routes/users.js
+    const jwt = require('jsonwebtoken');
+    const TOKEN_SECRET = Token应用码
 
     router.route(&quot;/login&quot;).post(async (req, res) => {
         await User.findOne({ username: req.body.username }).then(user => {

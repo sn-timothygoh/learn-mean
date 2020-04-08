@@ -112,7 +112,7 @@
         "updatedAt": 2020-03-11T09:16:28.809+00:00
     }
 ```
-用户密码与数据库之所以有分别是因为在前端应用了``bcrypt``来让密码复杂化，可参考``./client/src/pages/Timothy/components/create-user.component.js``。
+用户密码与数据库之所以有分别是因为在前端应用了``bcrypt``来让密码复杂化，可参考``./client/src/pages/Timothy/components/create-user.component.js``。用户注册成功后将自动跳转之贴文界（News Feed）。
 ```js
     // ./client/src/pages/Timothy/components/create-user.component.js
 
@@ -140,6 +140,8 @@
 ### 登录
 ```js
     // ./server/routes/users.js
+    const jwt = require('jsonwebtoken');
+    const TOKEN_SECRET = Token应用码
 
     router.route("/login").post(async (req, res) => {
         await User.findOne({ username: req.body.username }).then(user => {

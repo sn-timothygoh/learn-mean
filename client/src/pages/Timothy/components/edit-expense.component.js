@@ -1,100 +1,98 @@
-import React, { Component } from "react";
-import axios from "axios";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import React, { Component } from 'react'
+import axios from 'axios'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 export default class EditExpense extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.onChangeUsername = this.onChangeUsername.bind(this);
-    this.onChangeDesc = this.onChangeDesc.bind(this);
-    this.onChangeAmount = this.onChangeAmount.bind(this);
-    this.onChangeDate = this.onChangeDate.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    this.onChangeUsername = this.onChangeUsername.bind(this)
+    this.onChangeDesc = this.onChangeDesc.bind(this)
+    this.onChangeAmount = this.onChangeAmount.bind(this)
+    this.onChangeDate = this.onChangeDate.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
 
     this.state = {
-      username: "",
-      desc: "",
+      username: '',
+      desc: '',
       amount: 0,
       date: new Date(),
-      users: []
-    };
+      users: [],
+    }
   }
 
   componentDidMount() {
     axios
-      .get("http://localhost:5000/budget/" + this.props.match.params.id)
+      .get('http://localhost:5000/budget/' + this.props.match.params.id)
       .then(response => {
         this.setState({
           username: response.data.username,
           desc: response.data.desc,
           amount: response.data.amount,
-          date: new Date(response.data.date)
-        });
+          date: new Date(response.data.date),
+        })
       })
       .catch(function(error) {
-        console.log(error);
-      });
+        console.log(error)
+      })
 
     axios
-      .get("http://localhost:5001/user/")
+      .get('http://localhost:5001/user/')
       .then(response => {
         if (response.data.length > 0) {
           this.setState({
-            users: response.data.map(user => user.username)
-          });
+            users: response.data.map(user => user.username),
+          })
         }
       })
       .catch(error => {
-        console.log(error);
-      });
+        console.log(error)
+      })
   }
 
   onChangeUsername(e) {
     this.setState({
-      username: e.target.value
-    });
+      username: e.target.value,
+    })
   }
 
   onChangeDesc(e) {
     this.setState({
-      desc: e.target.value
-    });
+      desc: e.target.value,
+    })
   }
 
   onChangeAmount(e) {
     this.setState({
-      amount: e.target.value
-    });
+      amount: e.target.value,
+    })
   }
 
   onChangeDate(date) {
     this.setState({
-      date: date
-    });
+      date: date,
+    })
   }
 
   onSubmit(e) {
-    e.preventDefault();
+    e.preventDefault()
 
     const expense = {
       username: this.state.username,
       desc: this.state.desc,
       amount: this.state.amount,
-      date: this.state.date
-    };
-
-    console.log(expense);
+      date: this.state.date,
+    }
 
     axios
       .post(
-        "http://localhost:5001/budget/update/" + this.props.match.params.id,
-        expense
+        'http://localhost:5001/budget/update/' + this.props.match.params.id,
+        expense,
       )
-      .then(res => console.log(res.data));
+      .then(res => console.log(res.data))
 
-    window.location = "/budget";
+    window.location = '/budget'
   }
 
   render() {
@@ -116,7 +114,7 @@ export default class EditExpense extends Component {
                   <option key={user} value={user}>
                     {user}
                   </option>
-                );
+                )
               })}
             </select>
           </div>
@@ -158,6 +156,6 @@ export default class EditExpense extends Component {
           </div>
         </form>
       </div>
-    );
+    )
   }
 }

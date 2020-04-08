@@ -1,63 +1,62 @@
-import React, { Component } from "react";
-import axios from "axios";
+import React, { Component } from 'react'
+import axios from 'axios'
 // import LoginService from "./loginService";
-import cogoToast from "cogo-toast";
+import cogoToast from 'cogo-toast'
 
 export default class Login extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.onChangeUsername = this.onChangeUsername.bind(this);
-    this.onChangePassword = this.onChangePassword.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    this.onChangeUsername = this.onChangeUsername.bind(this)
+    this.onChangePassword = this.onChangePassword.bind(this)
+    this.onSubmit = this.onSubmit.bind(this)
 
     this.state = {
-      username: "",
-      password: "",
-      loginSuccess: false
-    };
+      username: '',
+      password: '',
+      loginSuccess: false,
+    }
   }
 
   onChangeUsername(e) {
     this.setState({
-      username: e.target.value
-    });
+      username: e.target.value,
+    })
   }
 
   onChangePassword(e) {
     this.setState({
-      password: e.target.value
-    });
+      password: e.target.value,
+    })
   }
 
-  onSubmit(e){
-    e.preventDefault();
+  onSubmit(e) {
+    e.preventDefault()
 
     const authUser = {
       username: this.state.username,
-      password: this.state.password
-    };
+      password: this.state.password,
+    }
 
-    console.log(authUser);
-
-    // const loginRes = LoginService(authUser);
-
-    axios.post("http://localhost:5000/user/login", authUser).then(res => {
-    console.log(res.headers['auth-header']);
-    sessionStorage.setItem("jwt-token", res.headers['auth-header']);
-    cogoToast.success('Logged in', {hideAfter : 3})
-      .then(() => {
-        window.location = "/feed";
-      })
-      .catch(err => {
-        cogoToast.error('Login failed, please check your credentials and try again.')
-          .then(() => this.setState({
-            username: "",
-            password: ""
-          }));
-      });
-  });
-  };
+    axios.post('http://localhost:5000/user/login', authUser).then(res => {
+      sessionStorage.setItem('jwt-token', res.headers['auth-header'])
+      cogoToast
+        .success('Logged in', { hideAfter: 3 })
+        .then(() => {
+          window.location = '/feed'
+        })
+        .catch(err => {
+          cogoToast
+            .error('Login failed, please check your credentials and try again.')
+            .then(() =>
+              this.setState({
+                username: '',
+                password: '',
+              }),
+            )
+        })
+    })
+  }
 
   render() {
     return (
@@ -89,6 +88,6 @@ export default class Login extends Component {
           </div>
         </form>
       </div>
-    );
+    )
   }
 }
