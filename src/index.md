@@ -189,3 +189,70 @@
 登录失败只源于用户名不存在或密码错误，返还``status: 204``。
 
 ## 贴文
+
+### 贴文说明
+每创建或更新一个贴文，该步骤都会进行用户验证，验证成功才可更新状态。验证所应用的部件是 <a href="https://www.jsonwebtoken.io" target="_blank">JSON Web Token (JWT)</a>。验证步骤将会是从Headers中的``auth-header``中获得用户登录资料。若``auth-header``为空，系统将会提示通知用户更新失败并要求进行登录。
+```js
+    // ./server/routes/verifyToken.js
+
+    const jwt = require("jsonwebtoken");
+
+    module.exports = function (req, res, next) {
+        const token = req.header("auth-header");
+        const TOKEN_SECRET = Token应用码
+        if (!token) return res.status(401).send('Access Denied');
+        try {
+            const verified = jwt.verify(token, TOKEN_SECRET);
+            req.user = verified;
+            next();
+        } catch(err) {
+            res.status(400).send('Invalid token');
+        }
+    }
+```
+
+### 创建贴文
+```js
+    // ./server/routes/feed.js
+
+    const verify = require("./verifyToken");
+
+    router.post("/add", verify, async (req, res) => {
+        console.log(req.user);
+        const feed = new Feed({
+            user: req.user._id,
+            content: req.body.content
+        });
+        try {
+            const savedFeed = await feed.save();
+            const savedFeedWithUserData = await Feed.findById(savedFeed._id).populate("user");
+            res.send(savedFeedWithUserData);
+        } catch (err) {
+            res.sendStatus(400);
+        }
+    });
+```
+
+##### 发布贴文成功
+
+##### 贴文发布失败
++ 贴文发布失败的理由如：
+    + 用户未登录
+    + 贴文内容为空
+
+### 点赞/给差评
+```js
+    // ./server/routes/feed.js
+
+    const verify = require("./verifyToken");
+
+    router.put("/updatee", verify, async (req, res) => {
+        try{
+            await Feed.findByIdAndUpdate(req.body._id, {
+                upvote: req.body.upvote,
+                downvote: req.body.downvote
+            });
+            res.send({"success": true});
+        } catch { req.sendStatus(400); }
+    });
+```

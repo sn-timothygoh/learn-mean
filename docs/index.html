@@ -364,7 +364,71 @@
 </code></pre>
 <h5>登录失败例子</h5>
 <p>登录失败只源于用户名不存在或密码错误，返还<code>status: 204</code>。</p>
-<h2>贴文</h2></article>
+<h2>贴文</h2>
+<h3>贴文说明</h3>
+<p>每创建或更新一个贴文，该步骤都会进行用户验证，验证成功才可更新状态。验证所应用的部件是 <a href="https://www.jsonwebtoken.io" target="_blank">JSON Web Token (JWT)</a>。验证步骤将会是从Headers中的<code>auth-header</code>中获得用户登录资料。若<code>auth-header</code>为空，系统将会提示通知用户更新失败并要求进行登录。</p>
+<pre class="prettyprint source lang-js"><code>    // ./server/routes/verifyToken.js
+
+    const jwt = require(&quot;jsonwebtoken&quot;);
+
+    module.exports = function (req, res, next) {
+        const token = req.header(&quot;auth-header&quot;);
+        const TOKEN_SECRET = Token应用码
+        if (!token) return res.status(401).send('Access Denied');
+        try {
+            const verified = jwt.verify(token, TOKEN_SECRET);
+            req.user = verified;
+            next();
+        } catch(err) {
+            res.status(400).send('Invalid token');
+        }
+    }
+</code></pre>
+<h3>创建贴文</h3>
+<pre class="prettyprint source lang-js"><code>    // ./server/routes/feed.js
+
+    const verify = require(&quot;./verifyToken&quot;);
+
+    router.post(&quot;/add&quot;, verify, async (req, res) => {
+        console.log(req.user);
+        const feed = new Feed({
+            user: req.user._id,
+            content: req.body.content
+        });
+        try {
+            const savedFeed = await feed.save();
+            const savedFeedWithUserData = await Feed.findById(savedFeed._id).populate(&quot;user&quot;);
+            res.send(savedFeedWithUserData);
+        } catch (err) {
+            res.sendStatus(400);
+        }
+    });
+</code></pre>
+<h5>发布贴文成功</h5>
+<h5>贴文发布失败</h5>
+<ul>
+<li>贴文发布失败的理由如：
+<ul>
+<li>用户未登录</li>
+<li>贴文内容为空</li>
+</ul>
+</li>
+</ul>
+<h3>点赞/给差评</h3>
+<pre class="prettyprint source lang-js"><code>    // ./server/routes/feed.js
+
+    const verify = require(&quot;./verifyToken&quot;);
+
+    router.put(&quot;/updatee&quot;, verify, async (req, res) => {
+        try{
+            await Feed.findByIdAndUpdate(req.body._id, {
+                upvote: req.body.upvote,
+                downvote: req.body.downvote
+            });
+            res.send({&quot;success&quot;: true});
+        } catch { req.sendStatus(400); }
+    });
+</code></pre></article>
     </section>
 
 

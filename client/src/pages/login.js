@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-// import LoginService from "./loginService";
 import cogoToast from 'cogo-toast'
 
 export default class Login extends Component {
