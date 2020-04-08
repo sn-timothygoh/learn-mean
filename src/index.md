@@ -1,13 +1,13 @@
 # 简介
 该项目是由 **SNSoft Sdn Bhd** 推出的一项培训功课，主要培训培训生适应后端开发的环境。
 
-#### MERN:
+#### MERN 是什么？
 | | |
-| ---- | ------- |
-| [**M** ongoDB](https://www.mongodb.com) | - 跨平台文档式数据库 |
-| [**E** xpressJS](https://expressjs.com/en/starter/basic-routing.html) | - JS框架，后端路由器 |
-| [**R** eactJS](https://reactjs.org/docs/getting-started.html) | - 前端JS框架 |
-| [**N** odeJS](https://nodejs.org/en/docs/) | - JS 运行环境 |
+| - | - |
+| [**M** ongoDB](https://www.mongodb.com) | 跨平台文档式数据库 |
+| [**E** xpressJS](https://expressjs.com/en/starter/basic-routing.html) | JS框架，后端路由器 |
+| [**R** eactJS](https://reactjs.org/docs/getting-started.html) | 前端JS框架 |
+| [**N** odeJS](https://nodejs.org/en/docs/) | JS 运行环境 |
 
 
 # 使用说明
@@ -38,25 +38,25 @@
 # 参数参考
 ## 用户（User）参数
 | 参数 | 种类 | 必填 | 内容 / 注解 |
-| - | - | - | - |
+| :- | :- | :- | :- |
 | _id | String | 自动生成 | N/A |
-| fname | String | 是 | N/A |
-| lname | String | 是 | N/A |
-| username | String | 是 | N/A |
-| pwd | String | 是 | N/A |
-| createdAt | Timestamp | 自动生成 | N/A |
-| updatedAt | Timestamp | 自动生成 | N/A |
+| fname | String | 是 | 用户名字 |
+| lname | String | 是 | 用户姓氏 |
+| username | String | 是 | 用户登入名，用以登录 |
+| pwd | String | 是 | 用户密码，用以登录 |
+| createdAt | Timestamp | 自动生成 | 帐户创建日期与时间 |
+| updatedAt | Timestamp | 自动生成 | 帐户最后更新日期与时间 |
 
 ## 贴文（Feeds）参数
 | 参数 | 种类 | 必填 | 内容 / 注解 |
-| - | - | - | - |
+| :- | :- | :- | :- |
 | _id | String | 自动生成 | N/A |
-| user | Array | 否 | N/A |
-| upvote | Number | 否 | N/A |
-| downvote | Number | 否 | N/A |
-| content | String | 是 | N/A |
-| createdAt | Timestamp | 自动生成 | N/A |
-| updatedAt | Timestamp | 自动生成 | N/A |
+| user | Array | 否 | 在用户贴文上点赞及给差评的用户名列表 |
+| upvote | Number | 否 | 总赞数 |
+| downvote | Number | 否 | 总差评数 |
+| content | String | 是 | 贴文内容 |
+| createdAt | Timestamp | 自动生成 | 贴文创建时间与日期，可用于计算贴文的发布时间 |
+| updatedAt | Timestamp | 自动生成 | 贴文最后更新时间与日期，可用于计算贴文的发布时间 |
 
 
 # 代码运作
@@ -64,7 +64,7 @@
 ### 注册
 ```js
     // ./server/routes/users.js
-    
+
     router.route("/add").post(async (req, res) => {
         const user = new User({
             fname: req.body.fname,
@@ -83,5 +83,107 @@
         }
     });
 ```
+
+##### 成功注册例子
+```json
+    {
+        header: {
+            auth-header: jwt-token
+        },
+        status: 200
+    }
+
+    // 用户发出请求
+    {
+        "fname": "Timothy",
+        "lname": "Goh",
+        "username": "tim",
+        "pwd": "tim",
+    }
+
+    // MongoDB 数据存档
+    {
+        "_id": ObjectId("5e68ac6cc747062534af30c2"),
+        "fname": "Timothy",
+        "lname": "Goh",
+        "username": "tim",
+        "pwd": "$2a$10$fP6yGMnVavGGenylLTfeueDSzYql5G7acF6WazsGdo6W0BSM4nYbm",
+        "createdAt": 2020-03-11T09:16:28.809+00:00,
+        "updatedAt": 2020-03-11T09:16:28.809+00:00
+    }
+```
+用户密码与数据库之所以有分别是因为在前端应用了``bcrypt``来让密码复杂化，可参考``./client/src/pages/Timothy/components/create-user.component.js``。
+```js
+    // ./client/src/pages/Timothy/components/create-user.component.js
+
+    import bcrypt from "bcryptjs";
+    
+    export default class CreateUser extends React.Component {
+        ...
+
+        onSubmit(e) {
+            e.preventDefault();
+            const user = {
+                fname: this.state.fname,
+                lname: this.state.lname,
+                username: this.state.username,
+                password: bcrypt.hashSync(this.state.password, bcrypt.genSalt(10))
+            }
+            ...
+        }
+    }
+```
+
+##### 失败注册例子
+注册不能成功只源于用户提供的质询不足，返还``status: 400``。
+
+### 登录
+```js
+    // ./server/routes/users.js
+
+    router.route("/login").post(async (req, res) => {
+        await User.findOne({ username: req.body.username }).then(user => {
+            if (!user) {
+                res.status(204);
+            } else {
+                bycrypt.compare(req.body.password, user.pwd).then(match => (match ？ res.sendStatus(200) : res.sendStatus(204)));
+
+                const token = jwt.sign({ _id: user._id }, TOKEN_SECRET);
+                res.header("auth-header", token);
+                res.json({ success: true, message: "Logged In"});
+            }
+        });
+    });
+```
+当用户发出登录请求时，系统将从搜索数据库里相应的用户名。若用户名存在数据库里，系统将会应用``bcrypt``解析数据库里的用户密码并与用户输入的密码进行对比，密码一致将成功，否者失败。
+
+##### 登录成功例子
+```json
+    {
+        header: {
+            auth-header: jwt-token
+        },
+        status: 200
+    }
+
+    // 用户发出请求
+    {
+        "username": "tim",
+        "pwd": "tim"
+    }
+    // MongoDB 数据存档相应用户名
+    {
+        "_id": ObjectId("5e68ac6cc747062534af30c2"),
+        "fname": "Timothy",
+        "lname": "Goh",
+        "username": "tim",
+        "pwd": "$2a$10$fP6yGMnVavGGenylLTfeueDSzYql5G7acF6WazsGdo6W0BSM4nYbm",
+        "createdAt": 2020-03-11T09:16:28.809+00:00,
+        "updatedAt": 2020-03-11T09:16:28.809+00:00
+    }
+```
+
+##### 登录失败例子
+登录失败只源于用户名不存在或密码错误，返还``status: 204``。
 
 ## 贴文

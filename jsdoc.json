@@ -13,6 +13,7 @@
     "recurse": true,
     "encoding": "utf8",
     "destination": "./docs/",
-    "readme": "./src/index.md"
+    "readme": "./src/index.md",
+    "template": "./clean-jsdoc-theme"
   }
 }
