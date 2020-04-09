@@ -39,19 +39,19 @@
 ## 用户（User）参数
 | 参数 | 种类 | 必填 | 内容 / 注解 |
 | :- | :- | :- | :- |
-| _id | String | 自动生成 | N/A |
+| _id | String | 自动生成 | MongoDB ObjectID，用以验证用户权限 |
 | fname | String | 是 | 用户名字 |
 | lname | String | 是 | 用户姓氏 |
 | username | String | 是 | 用户登入名，用以登录 |
 | pwd | String | 是 | 用户密码，用以登录 |
-| createdAt | Timestamp | 自动生成 | 帐户创建日期与时间 |
-| updatedAt | Timestamp | 自动生成 | 帐户最后更新日期与时间 |
+| createdAt | Timestamp | 自动生成 | 用户账号创建的时间与日期 |
+| updatedAt | Timestamp | 自动生成 | 用户账号最后更新时间与日期 |
 
 ## 贴文（Feeds）参数
 | 参数 | 种类 | 必填 | 内容 / 注解 |
 | :- | :- | :- | :- |
 | _id | String | 自动生成 | N/A |
-| user | Array | 否 | 在用户贴文上点赞及给差评的用户名列表 |
+| user | Array | 否 | 贴文作者OID与点赞者OID |
 | upvote | Number | 否 | 总赞数 |
 | downvote | Number | 否 | 总差评数 |
 | content | String | 是 | 贴文内容 |
@@ -103,13 +103,12 @@
 
     // MongoDB 数据存档
     {
-        "_id": ObjectId("5e68ac6cc747062534af30c2"),
-        "fname": "Timothy",
-        "lname": "Goh",
-        "username": "tim",
-        "pwd": "$2a$10$fP6yGMnVavGGenylLTfeueDSzYql5G7acF6WazsGdo6W0BSM4nYbm",
-        "createdAt": 2020-03-11T09:16:28.809+00:00,
-        "updatedAt": 2020-03-11T09:16:28.809+00:00
+        "_id":{"$oid":"5e68e6404f907236b0cfdc1f"},
+        "fname":"Timothy","lname":"Goh",
+        "username":"tim",
+        "pwd":"$2a$10$yCPFUMcPscB5jgxzy5r/kOmG3zqGOxOEiKJuYPm3Hp9HM7/QcUkU6",
+        "createdAt":{"$date":{"$numberLong":"1583932992922"}},
+        "updatedAt":{"$date":{"$numberLong":"1583932992922"}}
     }
 ```
 用户密码与数据库之所以有分别是因为在前端应用了``bcrypt``来让密码复杂化，可参考``./client/src/pages/Timothy/components/create-user.component.js``。用户注册成功后将自动跳转之贴文界（News Feed）。
@@ -175,13 +174,12 @@
     }
     // MongoDB 数据存档相应用户名
     {
-        "_id": ObjectId("5e68ac6cc747062534af30c2"),
-        "fname": "Timothy",
-        "lname": "Goh",
-        "username": "tim",
-        "pwd": "$2a$10$fP6yGMnVavGGenylLTfeueDSzYql5G7acF6WazsGdo6W0BSM4nYbm",
-        "createdAt": 2020-03-11T09:16:28.809+00:00,
-        "updatedAt": 2020-03-11T09:16:28.809+00:00
+        "_id":{"$oid":"5e68e6404f907236b0cfdc1f"},
+        "fname":"Timothy","lname":"Goh",
+        "username":"tim",
+        "pwd":"$2a$10$yCPFUMcPscB5jgxzy5r/kOmG3zqGOxOEiKJuYPm3Hp9HM7/QcUkU6",
+        "createdAt":{"$date":{"$numberLong":"1583932992922"}},
+        "updatedAt":{"$date":{"$numberLong":"1583932992922"}}
     }
 ```
 
@@ -218,7 +216,6 @@
     const verify = require("./verifyToken");
 
     router.post("/add", verify, async (req, res) => {
-        console.log(req.user);
         const feed = new Feed({
             user: req.user._id,
             content: req.body.content
@@ -234,6 +231,30 @@
 ```
 
 ##### 发布贴文成功
+```json
+    {
+        "header":{
+            "auth-header": jwt_token
+        }
+    }
+
+    // 用户发出创建贴文请求
+    {
+        "content": "Stay 127.0.0.1, don't go 255.255.255.255"
+    }
+
+    // MongoDB 数据库存档
+    {
+        "_id":{"$oid":"5e8c2d690630f203e8dd47b4"},
+        "upvote":{"$numberInt":"0"},
+        "downvote":{"$numberInt":"0"},
+        "user":{"$oid":"5e68e6404f907236b0cfdc1f"},
+        "content":"Stay 127.0.0.1, don't go 255.255.255.255",
+        "createdAt":{"$date":{"$numberLong":"1586244969523"}},
+        "updatedAt":{"$date":{"$numberLong":"1586244969523"}}
+    }
+
+```
 
 ##### 贴文发布失败
 + 贴文发布失败的理由如：
@@ -256,3 +277,27 @@
         } catch { req.sendStatus(400); }
     });
 ```
+
+##### 用户回应成功
+```json
+    {
+        "header": {
+            "auth-header": jwt_token
+        }
+    }
+
+    {
+        "_id":{"$oid":"5e6b40c984ee6f5f87b42a04"},
+        "user":[{"$oid":"5e69ddb836ddf517d8f1e120"}],
+        "upvote":{"$numberInt":"0"},
+        "downvote":{"$numberInt":"1"},
+        "content":"testing the latest release",
+        "createdAt":{"$date":{"$numberLong":"1584087241899"}},
+        "updatedAt":{"$date":{"$numberLong":"1584087301497"}}
+    }
+```
+
+##### 用户回应失败
++ 用户给与回应失败的理由如：
+    + 用户未登录
+    + 用户在自己的贴问下给回应
